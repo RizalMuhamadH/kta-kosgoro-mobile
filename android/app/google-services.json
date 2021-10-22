@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "251233190047",
+    "project_id": "kta-kosgoro",
+    "storage_bucket": "kta-kosgoro.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:251233190047:android:e0d04c46003c3d4063e2aa",
+        "android_client_info": {
+          "package_name": "com.kosgoro.kta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "251233190047-ruqtbilr2ndoo1f2p2942fcdro3hdtss.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGH6_IbRmbs1Dm6upOmBFG5YuZDdMpIXw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "251233190047-ruqtbilr2ndoo1f2p2942fcdro3hdtss.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
