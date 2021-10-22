@@ -6,9 +6,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:kta/binding/auth_binding.dart';
 import 'package:kta/route/app.dart';
 import 'package:kta/route/route_name.dart';
+import 'package:kta/service/one_signal.dart';
 
 void main() {
+  initService();
   runApp(MyApp());
+}
+
+initService() async {
+  await Get.putAsync(() => OneSignalService().init());
 }
 
 class MyApp extends StatelessWidget {
