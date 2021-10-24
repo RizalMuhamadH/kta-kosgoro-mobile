@@ -32,6 +32,7 @@ dependencies:
   dropdown_search: ^1.0.3
   flutter:
     sdk: flutter
+  flutter_svg: ^0.23.0+1
   get: ^4.3.8
   google_fonts: ^2.1.0
   image_picker: ^0.8.4+3
@@ -57,6 +58,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/logo/
+    - assets/bg/
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
