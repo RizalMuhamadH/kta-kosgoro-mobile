@@ -1,11 +1,11 @@
 class ResponseData {
-  String? code;
+  int? code;
   String? type;
   String? message;
   String? token;
   String? noMember;
-  int? status;
-  dynamic data;
+  String? status;
+  dynamic map;
 
   ResponseData({this.code, this.type, this.message});
 
@@ -16,7 +16,7 @@ class ResponseData {
     token = json['token'];
     noMember = json['no_member'];
     status = json['status'];
-    data = json['data'];
+    map = json['data'];
   }
 
   Map<String, dynamic> toJson() {
@@ -27,7 +27,26 @@ class ResponseData {
     data['token'] = token;
     data['no_member'] = noMember;
     data['status'] = status;
-    data['data'] = data;
+    data['data'] = map;
     return data;
   }
 }
+
+// class Data {
+//   String? status;
+//   int? active;
+//   String? noMember;
+
+//   Data.fromJson(Map<String, dynamic> json) {
+//     noMember = json['no_member'];
+//     status = json['status'];
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     data['no_member'] = noMember;
+//     data['status'] = status;
+//     data['data'] = data;
+//     return data;
+//   }
+// }
