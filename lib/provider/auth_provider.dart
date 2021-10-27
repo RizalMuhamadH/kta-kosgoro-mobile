@@ -80,7 +80,6 @@ class AuthProvider {
   Future<List<Complimentary>> getProvince() async {
     try {
       final res = await dio.get("$BASE_URL/province");
-      Logger().e(res.data);
       final list = res.data as List;
       return list.map<Complimentary>((e) => Complimentary.fromJson(e)).toList();
     } catch (e) {

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kta/repository/elasticsearch_repository.dart';
 import 'package:kta/repository/user_repository.dart';
 import 'package:kta/route/route_name.dart';
 import 'package:kta/service/one_signal.dart';
@@ -10,27 +11,57 @@ import 'package:logger/logger.dart';
 
 class HomeController extends GetxController {
   final UserRepository repository;
+  final ElasticsearchRepository elasticsearch;
 
-  HomeController(this.repository);
+  HomeController(this.repository, this.elasticsearch);
 
   final nip = "".obs;
   final name = "".obs;
   final district = "".obs;
+  final position = "".obs;
+  final status = "".obs;
+  final qrcode = "".obs;
+  final photo = "".obs;
 
   @override
   void onInit() async {
     // await Get.putAsync(() => PrefService().init());
     // await Get.putAsync(() => OneSignalService().init());
     // TODO: implement onInit
-    PrefService.get().setUser({
-      "name": "rizal",
-      "no_member": "AQ6pPrM7j1nm",
-      "token": "94b519e7-f77e-475d-97ab-e81cd8f4cb66"
-    });
+    // PrefService.get().setNip("2021.1025.15");
+    // PrefService.get().setToken("94b519e7-f77e-475d-97ab-e81cd8f4cb66");
     if (PrefService.get().getStatus() == "0") {
       checkStatus();
+    } else {
+      getMember();
     }
     super.onInit();
+  }
+
+  getMember() async {
+    await elasticsearch.getMember(PrefService.get().getNip()).then((value) {
+      Logger().e(value["_source"]);
+      name.value = value["_source"]['name'];
+      nip.value = PrefService.get().getNip();
+      district.value = value["_source"]['district'];
+      position.value = value["_source"]['position'];
+      qrcode.value = value["_source"]['qrcode'];
+      photo.value = value["_source"]['photo'];
+      final stat = value["_source"]['status'];
+      if (stat == 1) {
+        status.value = "Diverifikasi";
+      } else if (stat == 2) {
+        status.value = "Diblok";
+      } else if (stat == 3) {
+        status.value = "Diverifikasi";
+      }
+    }, onError: (e) {
+      Logger().e(e);
+      // Get.back(closeOverlays: true);
+    }).catchError((e) {
+      Logger().e(e);
+      // Get.back(closeOverlays: true);
+    });
   }
 
   checkStatus() async {
@@ -39,6 +70,19 @@ class HomeController extends GetxController {
       if (value.code == 200) {
         if (value.map['token'] == null) {
           dialogDeletedPost();
+          return;
+        }
+
+        if (value.map['status'] == "0") {
+          photo.value = value.map['photo'];
+          name.value = value.map['name'];
+          district.value = value.map['district'];
+        }
+
+        if (value.map['status'] != "0") {
+          PrefService.get().setNip(value.map['no_member']);
+          PrefService.get().setToken(value.map['token']);
+          getMember();
         }
         PrefService.get().setStatus(value.map['status']);
       }
