@@ -8,6 +8,7 @@ import 'package:kta/route/route_name.dart';
 import 'package:kta/service/one_signal.dart';
 import 'package:kta/service/pref_service.dart';
 import 'package:logger/logger.dart';
+import 'package:screenshot/screenshot.dart';
 
 class HomeController extends GetxController {
   final UserRepository repository;
@@ -22,6 +23,9 @@ class HomeController extends GetxController {
   final status = "".obs;
   final qrcode = "".obs;
   final photo = "".obs;
+  final state = "0".obs;
+
+  final screenshotController = ScreenshotController();
 
   @override
   void onInit() async {
@@ -35,6 +39,7 @@ class HomeController extends GetxController {
     } else {
       getMember();
     }
+    state.value = PrefService.get().getStatus();
     super.onInit();
   }
 
@@ -48,6 +53,7 @@ class HomeController extends GetxController {
       qrcode.value = value["_source"]['qrcode'];
       photo.value = value["_source"]['photo'];
       final stat = value["_source"]['status'];
+      state.value = stat;
       if (stat == 1) {
         status.value = "Diverifikasi";
       } else if (stat == 2) {
@@ -85,6 +91,7 @@ class HomeController extends GetxController {
           getMember();
         }
         PrefService.get().setStatus(value.map['status']);
+        state.value = value.map['status'];
       }
     }, onError: (e) {
       Logger().e(e);
@@ -117,5 +124,10 @@ class HomeController extends GetxController {
         Get.toNamed(Routes.register);
       },
     );
+  }
+
+  logout() {
+    PrefService.get().remove();
+    Get.offAllNamed(Routes.login);
   }
 }

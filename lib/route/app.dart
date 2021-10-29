@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:kta/binding/auth_binding.dart';
 import 'package:kta/binding/home_binding.dart';
 import 'package:kta/binding/otp_binding.dart';
+import 'package:kta/binding/qrcode_binding.dart';
 import 'package:kta/binding/splash_binding.dart';
 import 'package:kta/middleware%20/auth_middleware.dart';
 import 'package:kta/route/route_name.dart';
@@ -9,6 +10,7 @@ import 'package:kta/view/page/home.dart';
 import 'package:kta/view/page/login.dart';
 import 'package:kta/view/page/otp_validate.dart';
 import 'package:kta/view/page/register.dart';
+import 'package:kta/view/page/scan.dart';
 import 'package:kta/view/page/splash.dart';
 
 class App {
@@ -31,6 +33,8 @@ class App {
         name: Routes.home,
         page: () => HomePage(),
         binding: HomeBinding(),
-        middlewares: [AuthMiddleware()])
+        middlewares: [AuthMiddleware()]),
+    GetPage(
+        name: Routes.scan, page: () => ScanPage(), binding: QRcodeBinding()),
   ];
 }

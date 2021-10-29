@@ -76,4 +76,8 @@ class PrefService extends GetxService {
   setUser(Map<String, dynamic> data) async {
     await prefs!.setString(user, jsonEncode(data));
   }
+
+  remove() async {
+    await prefs!.clear();
+  }
 }

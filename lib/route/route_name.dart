@@ -6,4 +6,5 @@ abstract class Routes {
   static const register = '/register';
   static const forgotPassword = '/forgot-password';
   static const showCard = '/show/card';
+  static const scan = '/scan';
 }
