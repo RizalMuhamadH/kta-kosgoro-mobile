@@ -160,34 +160,37 @@ class HomePage extends GetView<HomeController> {
                 Screenshot(
                     child: cardMember(),
                     controller: controller.screenshotController),
-                Container(
-                  margin: const EdgeInsets.only(
-                      bottom: 50, top: 50, left: 20, right: 20),
-                  child: ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(primaryColor)),
-                      onPressed: () async {
-                        final image = await controller.screenshotController
-                            .captureFromWidget(cardMember());
-                        final directory =
-                            await getApplicationDocumentsDirectory();
-                        final imagePath = await File(
-                                '${directory.path}/${controller.name.toLowerCase().replaceAll(" ", "_")}.png')
-                            .create();
-                        await imagePath.writeAsBytes(image);
+                Obx(() => controller.state.value == "0"
+                    ? SizedBox()
+                    : Container(
+                        margin: const EdgeInsets.only(
+                            bottom: 50, top: 50, left: 20, right: 20),
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(primaryColor)),
+                            onPressed: () async {
+                              final image = await controller
+                                  .screenshotController
+                                  .captureFromWidget(cardMember());
+                              final directory =
+                                  await getApplicationDocumentsDirectory();
+                              final imagePath = await File(
+                                      '${directory.path}/${controller.name.toLowerCase().replaceAll(" ", "_")}.png')
+                                  .create();
+                              await imagePath.writeAsBytes(image);
 
-                        /// Share Plugin
-                        Share.shareFiles([imagePath.path]);
-                        print(imagePath.path);
-                        // controller.register();
-                      },
-                      child: Text(
-                        "Cetak Kartu Anggota",
-                        style: TextStyle(color: Colors.white),
+                              /// Share Plugin
+                              Share.shareFiles([imagePath.path]);
+                              print(imagePath.path);
+                              // controller.register();
+                            },
+                            child: Text(
+                              "Cetak Kartu Anggota",
+                              style: TextStyle(color: Colors.white),
+                            )),
+                        width: Get.width,
                       )),
-                  width: Get.width,
-                ),
               ],
             ),
           )),
