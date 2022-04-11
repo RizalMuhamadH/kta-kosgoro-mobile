@@ -23,11 +23,29 @@ class AuthProvider {
     }
   }
 
-  Future<ResponseData> auth(String email, String token) async {
+  Future<ResponseData> registerAccount(
+      String username, String email, String password) async {
+    try {
+      final res = await dio.post("$BASE_URL/register",
+          data: FormData.fromMap(
+              {"username": username, "email": email, "password": password}));
+
+      return ResponseData.fromJson(res.data);
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  Future<ResponseData> auth(
+      String? email, String? password, String? username) async {
     try {
       final res = await dio.post("$BASE_URL/login/member",
-          data: FormData.fromMap(
-              {"password": token, "email": email, "api": true}));
+          data: FormData.fromMap({
+            "password": password,
+            "email": email,
+            "username": username,
+            "api": true
+          }));
       Logger().i(res.data);
       return ResponseData.fromJson(res.data);
     } catch (e) {

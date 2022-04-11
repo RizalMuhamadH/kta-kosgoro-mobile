@@ -50,13 +50,13 @@ class OTPValidatePage extends GetView<OTPController> {
             SizedBox(
               height: 60,
             ),
-            GestureDetector(
-              onTap: () {},
-              child: Text(
-                "Kirim Ulang",
-                style: TextStyle(fontSize: 12),
-              ),
-            ),
+            // GestureDetector(
+            //   onTap: () {},
+            //   child: Text(
+            //     "Kirim Ulang",
+            //     style: TextStyle(fontSize: 12),
+            //   ),
+            // ),
           ],
         ),
       ),

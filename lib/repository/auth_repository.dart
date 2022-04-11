@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:kta/model/complimentary.dart';
 import 'package:kta/model/json_response.dart';
 import 'package:kta/provider/auth_provider.dart';
+import 'package:kta/service/pref_service.dart';
 
 class AuthRepository {
   final AuthProvider provider;
@@ -29,9 +30,15 @@ class AuthRepository {
   Future<ResponseData> otpGenerate(String email) async =>
       await provider.otpGenerate(email);
 
+  Future<ResponseData> registerAccount(
+          {required String username,
+          required String email,
+          required String password}) async =>
+      await provider.registerAccount(username, email, password);
+
   Future<ResponseData> auth(
-          {required String email, required String token}) async =>
-      await provider.auth(email, token);
+          {String? email, required String password, String? username}) async =>
+      await provider.auth(email, password, username);
 
   Future<List<Complimentary>> getProvince() async => provider.getProvince();
   Future<List<Complimentary>> getDistrict(int id) async =>

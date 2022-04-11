@@ -5,7 +5,7 @@ class ResponseData {
   String? token;
   String? noMember;
   String? status;
-  dynamic map;
+  Map<String, dynamic>? map;
 
   ResponseData({this.code, this.type, this.message});
 
@@ -16,7 +16,7 @@ class ResponseData {
     token = json['token'];
     noMember = json['no_member'];
     status = json['status'];
-    map = json['data'];
+    map = json['data'] != null ? json['data'] as Map<String, dynamic> : null;
   }
 
   Map<String, dynamic> toJson() {

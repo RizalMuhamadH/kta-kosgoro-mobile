@@ -15,7 +15,7 @@ class OTPController extends GetxController {
   auth() async {
     dialogProgressBar();
     await repository
-        .auth(email: PrefService.get().getEmail(), token: ctrlOtp.value.text)
+        .auth(email: PrefService.get().getEmail(), password: ctrlOtp.value.text)
         .then((value) {
       if (value.code == 200) {
         // Pref().setNip(value.noMember ?? "");

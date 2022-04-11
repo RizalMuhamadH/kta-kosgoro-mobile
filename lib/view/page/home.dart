@@ -9,6 +9,7 @@ import 'package:kta/config/constant.dart';
 import 'package:kta/controller/home_controller.dart';
 import 'package:kta/route/route_name.dart';
 import 'package:kta/service/pref_service.dart';
+import 'package:kta/view/section/navigation_drawer.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share/share.dart';
@@ -17,6 +18,7 @@ class HomePage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: NavigationDrawer(),
       body: Obx(() => SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,7 +95,7 @@ class HomePage extends GetView<HomeController> {
                                               fontWeight: FontWeight.bold),
                                         ),
                                         Text(
-                                          controller.district.value,
+                                          controller.province.value,
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 12),
@@ -120,16 +122,17 @@ class HomePage extends GetView<HomeController> {
                       ),
                       AppBar(
                         elevation: 0,
+                        iconTheme: IconThemeData(color: Colors.white),
                         backgroundColor: Colors.transparent,
-                        leading: GestureDetector(
-                          onTap: () {
-                            controller.logout();
-                          },
-                          child: Icon(
-                            Icons.logout_rounded,
-                            color: Colors.white,
-                          ),
-                        ),
+                        // leading: GestureDetector(
+                        //   onTap: () {
+                        //     controller.logout();
+                        //   },
+                        //   child: Icon(
+                        //     Icons.logout_rounded,
+                        //     color: Colors.white,
+                        //   ),
+                        // ),
                         actions: [
                           GestureDetector(
                             onTap: () {
@@ -160,7 +163,7 @@ class HomePage extends GetView<HomeController> {
                 Screenshot(
                     child: cardMember(),
                     controller: controller.screenshotController),
-                Obx(() => controller.state.value == "0"
+                Obx(() => controller.state.value == 0
                     ? SizedBox()
                     : Container(
                         margin: const EdgeInsets.only(
@@ -197,7 +200,7 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
-  cardMember() => Obx(() => controller.state.value == "0"
+  cardMember() => Obx(() => controller.state.value == 0
       ? Center(
           child: Text(
             "Kartu belum Terverifikasi",
@@ -206,85 +209,183 @@ class HomePage extends GetView<HomeController> {
         )
       : Container(
           margin: EdgeInsets.symmetric(horizontal: 20),
-          child: AspectRatio(
-            aspectRatio: 16 / 9,
-            child: Card(
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        bottomLeft: Radius.circular(10)),
-                    child: Image.asset(
-                      "assets/bg/bg_card.png",
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Expanded(
-                      child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 8, bottom: 8, right: 12, left: 16),
-                    child: Stack(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              controller.nip.value,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              controller.name.value,
-                              style: TextStyle(
-                                  color: primaryColor,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              controller.district.value,
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 12),
-                            ),
-                            Text(
-                              controller.status.value,
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 12),
-                            ),
-                            Align(
-                                alignment: Alignment.bottomRight,
-                                child: Container(
-                                  color: Colors.grey[200],
-                                  height: 50,
-                                  width: 50,
-                                  child: SvgPicture.network(
-                                      "$STORAGE_URL/${controller.qrcode.value}"),
-                                )),
-                          ],
+          child: Card(
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("assets/bg/texture-png.png"),
+                        fit: BoxFit.cover,
+                      ),
+                      color: primaryColor,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(
+                            left: 8, top: 8, bottom: 8, right: 16),
+                        padding: EdgeInsets.only(
+                            top: 5, bottom: 5, left: 5, right: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
                         ),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: Image.asset(
-                            "assets/logo/logo.png",
+                        child: Image.asset(
+                          "assets/logo/logo.png",
+                          height: 50,
+                          width: 50,
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "KARTU ANGGOTA",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                "KOSGORO 1957",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ]),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 8, right: 8),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left: 8),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10)),
+                          width: 90.3,
+                          height: 90,
+                          child: Image.network(
+                              "$STORAGE_URL/${controller.photo.value}"),
+                        ),
+                        Expanded(
+                            child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 8, bottom: 8, right: 12, left: 16),
+                          child: Stack(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  // SizedBox(
+                                  //   height: 20,
+                                  // ),
+                                  Text(
+                                    controller.nip.value,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    controller.name.value,
+                                    style: TextStyle(
+                                        color: primaryColor,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    controller.province.value,
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 12),
+                                  ),
+                                  // Text(
+                                  //   controller.status.value,
+                                  //   style: TextStyle(
+                                  //       color: Colors.black, fontSize: 12),
+                                  // ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )),
+                        Obx(() => Align(
+                              alignment: Alignment.topRight,
+                              child: Column(
+                                children: [
+                                  Image.asset(
+                                    controller.state.value == 1
+                                        ? "assets/logo/kosgoro-verifikasi.png"
+                                        : "assets/logo/kosgoro-not-verifikasi.png",
+                                    height: 30,
+                                    width: 30,
+                                  ),
+                                  Text(controller.status.value,
+                                      style: TextStyle(
+                                          color: Colors.red[800],
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold))
+                                ],
+                              ),
+                            )),
+                      ]),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: Stack(
+                    children: [
+                      Align(
+                          alignment: Alignment.center,
+                          child: Column(
+                            children: [
+                              Text("Ketua Umum :",
+                                  style: TextStyle(fontSize: 10)),
+                              Container(
+                                child: Image.asset(
+                                  "assets/logo/ttd-dave.png",
+                                  height: 40,
+                                  width: 40,
+                                ),
+                              ),
+                              Text("Dave AF Laksono",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          )),
+                      Positioned(
+                          bottom: 8,
+                          right: 0,
+                          child: Container(
+                            color: Colors.grey[200],
                             height: 50,
                             width: 50,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ))
-                ],
-              ),
+                            child: SvgPicture.network(
+                                "$STORAGE_URL/${controller.qrcode.value}"),
+                          )),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+              ],
             ),
           ),
         ));

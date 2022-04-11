@@ -14,6 +14,8 @@ class AuthController extends GetxController {
   AuthController(this.repository);
 
   final ctrlEmail = TextEditingController().obs;
+  final ctrlUsername = TextEditingController().obs;
+  final ctrlPassword = TextEditingController().obs;
   final ctrlName = TextEditingController().obs;
   final ctrlAddress = TextEditingController().obs;
   final ctrlPhone = TextEditingController().obs;
@@ -88,6 +90,76 @@ class AuthController extends GetxController {
       Logger().e(e);
       isLoading.value = false;
     });
+  }
+
+  signUpUser() async {
+    // snackbar("${ctrlUsername.value.text} ${ctrlPassword.value.text}");
+    if (ctrlUsername.value.text != "" && ctrlPassword.value.text.length > 5) {
+      dialogProgressBar();
+      await repository
+          .auth(
+              email: "",
+              username: ctrlUsername.value.text,
+              password: ctrlPassword.value.text)
+          .then((value) {
+        if (value.code == 200) {
+          PrefService.get().setEmail(value.noMember!);
+          // Pref().setToken(value.token ?? "");
+          PrefService.get().setAuth(true);
+
+          // Get.back(closeOverlays: true);
+          Get.offAllNamed(Routes.home);
+        } else {
+          snackbar(value.message!);
+        }
+      }, onError: (e) {
+        Logger().e(e);
+        Get.back(closeOverlays: true);
+      }).catchError((e) {
+        Logger().e(e);
+        Get.back(closeOverlays: true);
+      });
+    } else {
+      snackbar("Lengkapi seluruh field");
+    }
+  }
+
+  registerAccount() async {
+    if (ctrlUsername.value.text != "" &&
+        ctrlEmail.value.text != "" &&
+        ctrlPassword.value.text.length > 5) {
+      dialogProgressBar();
+      await repository
+          .registerAccount(
+              username: ctrlUsername.value.text,
+              email: ctrlEmail.value.text,
+              password: ctrlPassword.value.text)
+          .then((value) {
+        if (value.code == 200) {
+          Get.snackbar("Success", value.message!,
+              snackPosition: SnackPosition.BOTTOM);
+          ctrlUsername.value.text = "";
+          ctrlEmail.value.text = "";
+          ctrlPassword.value.text = "";
+          Get.back();
+        } else {
+          // Get.back(closeOverlays: true);
+          snackbar(value.message!);
+        }
+      }, onError: (e) {
+        Logger().e(e);
+        Get.back(closeOverlays: true);
+        Get.snackbar("Error", "Something went wrong",
+            snackPosition: SnackPosition.BOTTOM);
+      }).catchError((e) {
+        Logger().e(e);
+        Get.back(closeOverlays: true);
+        Get.snackbar("Error", "Something went wrong",
+            snackPosition: SnackPosition.BOTTOM);
+      });
+    } else {
+      snackbar("Lengkapi seluruh field");
+    }
   }
 
   register() async {

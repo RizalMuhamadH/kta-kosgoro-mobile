@@ -9,7 +9,7 @@ import 'package:kta/binding/auth_binding.dart';
 import 'package:kta/config/constant.dart';
 import 'package:kta/route/app.dart';
 import 'package:kta/route/route_name.dart';
-import 'package:kta/service/one_signal.dart';
+// import 'package:kta/service/one_signal.dart';
 import 'package:kta/service/pref_service.dart';
 
 void main() async {
@@ -20,7 +20,7 @@ void main() async {
 
 initService() async {
   await Get.putAsync(() => PrefService().init());
-  await Get.putAsync(() => OneSignalService().init());
+  // await Get.putAsync(() => OneSignalService().init());
 }
 
 class MyApp extends StatelessWidget {

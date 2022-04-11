@@ -18,12 +18,12 @@ class HomeController extends GetxController {
 
   final nip = "".obs;
   final name = "".obs;
-  final district = "".obs;
+  final province = "".obs;
   final position = "".obs;
   final status = "".obs;
   final qrcode = "".obs;
   final photo = "".obs;
-  final state = "0".obs;
+  final state = 0.obs;
 
   final screenshotController = ScreenshotController();
 
@@ -39,7 +39,6 @@ class HomeController extends GetxController {
     } else {
       getMember();
     }
-    state.value = PrefService.get().getStatus();
     super.onInit();
   }
 
@@ -48,7 +47,7 @@ class HomeController extends GetxController {
       Logger().e(value["_source"]);
       name.value = value["_source"]['name'];
       nip.value = PrefService.get().getNip();
-      district.value = value["_source"]['district'];
+      province.value = value["_source"]['province'];
       position.value = value["_source"]['position'];
       qrcode.value = value["_source"]['qrcode'];
       photo.value = value["_source"]['photo'];
@@ -74,24 +73,24 @@ class HomeController extends GetxController {
     await repository.checkStatus().then((value) {
       Logger().e(value.toJson());
       if (value.code == 200) {
-        if (value.map['token'] == null) {
+        if (value.map!['token'] == null) {
           dialogDeletedPost();
           return;
         }
 
-        if (value.map['status'] == "0") {
-          photo.value = value.map['photo'];
-          name.value = value.map['name'];
-          district.value = value.map['district'];
+        if (value.map!['status'] == "0") {
+          photo.value = value.map!['photo'];
+          name.value = value.map!['name'];
+          province.value = value.map!['province'];
         }
 
-        if (value.map['status'] != "0") {
-          PrefService.get().setNip(value.map['no_member']);
-          PrefService.get().setToken(value.map['token']);
+        if (value.map!['status'] != "0") {
+          PrefService.get().setNip(value.map!['no_member']);
+          PrefService.get().setToken(value.map!['token']);
           getMember();
         }
-        PrefService.get().setStatus(value.map['status']);
-        state.value = value.map['status'];
+        PrefService.get().setStatus(value.map!['status']);
+        state.value = value.map!['status'];
       }
     }, onError: (e) {
       Logger().e(e);
